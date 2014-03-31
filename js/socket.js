@@ -1,5 +1,11 @@
-function Socket(player, opponent) {
+function Socket() {
+    var roomContainer = document.querySelector(".room");
+    this.roomContainer = roomContainer;
     this.socket = io.connect('http://two048.herokuapp.com');
+
+    this.socket.on('connect', function() {
+        //roomContainer.innerHTML = 'Room: ' + this.socket.sessionid.slice(0, 5);
+    });
 }
 
 Socket.prototype.setPlayers = function(player, opponent) {
@@ -10,6 +16,7 @@ Socket.prototype.setPlayers = function(player, opponent) {
 }
 
 Socket.prototype.subscribe = function() {
+    var roomContainer = this.roomContainer;
     var player = this.player;
     var opponent = this.opponent;
 
@@ -18,6 +25,9 @@ Socket.prototype.subscribe = function() {
         opponent.grid.build(data.opponent.cells);
         player.actuate();
         opponent.actuate();
+        if(data.room) {
+            //roomContainer.innerHTML = 'Room: ' + data.room;
+        }
     });
 
     this.socket.on('opponentMoved', function(data) {
