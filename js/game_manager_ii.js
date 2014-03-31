@@ -52,7 +52,7 @@ GameManager.prototype.addRandomTile = function () {
 };
 
 // Set up the game
-GameManagerII.prototype.setup = function (playable) {
+GameManagerII.prototype.setup = function (playable, roomId) {
 
     // Reload the game from a previous game if present
     this.grid        = new Grid(this.size);
@@ -67,7 +67,7 @@ GameManagerII.prototype.setup = function (playable) {
 
         // Update the actuator
         this.actuate();
-        this.socket.emit('gameInitialized', this.grid);
+        this.socket.emit('gameInitialized', {board: this.grid, roomId: roomId});
     }
 };
 
